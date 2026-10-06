@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: planner
+      POSTGRES_PASSWORD: planner
+      POSTGRES_DB: planner
+    ports:
+      - '5433:5432' # host 5433 — o 5432 já é usado por outro container (soupe-postgres-develop)
+    volumes:
+      - planner_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U planner']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  planner_pgdata:
